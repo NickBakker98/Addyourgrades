@@ -1,14 +1,36 @@
 package com.example.nick0.addyourgrades;
 
-public class Grades {
 
-    private String courseName;
-    private String grade;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcelable;
+
+@Entity(tableName = "grades")
+public class Grades {
 
     public Grades(String courseName, String grade){
         this.courseName = courseName;
         this.grade = grade;
     }
+
+    @PrimaryKey(autoGenerate = true)
+    private Long id;
+
+    @ColumnInfo(name = "courseName")
+    private String courseName;
+
+    @ColumnInfo(name = "grade")
+    private String grade;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCourseName() {
         return courseName;
     }

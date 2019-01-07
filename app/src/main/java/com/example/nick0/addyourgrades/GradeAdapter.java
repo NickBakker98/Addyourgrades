@@ -38,4 +38,14 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeViewHolder> {
     public int getItemCount(){
         return listGrades.size();
     }
+
+
+    public void swapList (List<Grades> newList) {
+
+        listGrades = newList;
+        if (newList != null) {
+            // Force the RecyclerView to refresh
+            this.notifyDataSetChanged();
+        }
+    }
 }
