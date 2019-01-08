@@ -3,4 +3,5 @@
     <string name="add">Add your grade here</string>
     <string name="hint_coursename">Course Name</string>
     <string name="hint_grade">Grade</string>
+    <string name="quote">Quote of the day</string>
 </resources>

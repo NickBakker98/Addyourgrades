@@ -26,27 +26,20 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Declare the variables
     List<Grades> mGradeObjects = new ArrayList<>();
     private FloatingActionButton add_Button;
     GradeAdapter mAdapter = new GradeAdapter(this, mGradeObjects);
     private TextView mQuoteTextView;
-//    static AppDatabase db;
     RecyclerView recyclerView;
     private MainViewModel mMainViewModel;
-
-//    public final static int TASK_GET_ALL_GRADES = 0;
-//    public final static int TASK_DELETE_GRADE = 1;
-//    public final static int TASK_UPDATE_GRADE = 2;
-//    public final static int TASK_INSERT_GRADE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        db = AppDatabase.getInstance(this);
-//        new GradeAsyncTask(TASK_GET_ALL_GRADES).execute();
-
+        //This is the MainViewModel which handles the database.
         mMainViewModel = new MainViewModel(getApplicationContext());
         mMainViewModel.getGrades().observe(this, new Observer<List<Grades>>() {
             @Override
@@ -57,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Setting the recyclerView.
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -79,12 +73,15 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        //Attach the swipe to the recyclerView.
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        //Linking button and textview to xml file.
         this.add_Button = findViewById(R.id.add_button);
         mQuoteTextView = findViewById(R.id.dayquote);
 
+        //Create an OnClickListener to the add_button which navigates to the AddGradeActivity.
         add_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,19 +90,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Calling the requestData method.
         requestData();
     }
 
-//    private void updateUI() {
-//        if (mAdapter == null) {
-//            mGradeObjects = db.gradeDao().getAllGrades();
-//            mAdapter = new GradeAdapter(this, mGradeObjects);
-//            recyclerView.setAdapter(mAdapter);
-//        } else {
-//            mAdapter.swapList(mGradeObjects);
-//        }
-//    }
-
+    //Getting the data from the AddGradeActivity and add this data to the list.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String tmpTitle, tmpGrade;
@@ -114,16 +103,16 @@ public class MainActivity extends AppCompatActivity {
             tmpGrade = data.getStringExtra(AddGradeActivity.EXTRA_GRADE);
             Grades newGrade = new Grades(tmpTitle, tmpGrade);
             mGradeObjects.add(newGrade);
-            //new GradeAsyncTask(TASK_INSERT_GRADE).execute(newGrade);
             mMainViewModel.insert(newGrade);
         }
     }
 
-
+    //Setting the text for the textView with the quote of the day.
     public void setQuoteTextView(String quoteMessage) {
         mQuoteTextView.setText(quoteMessage);
     }
 
+    //Request the data from the API server.
     private void requestData()
     {
         NumbersApiService service = NumbersApiService.retrofit.create(NumbersApiService.class);
@@ -146,11 +135,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void onGradeDbUpdated(List list) {
-        mGradeObjects = list;
-        mAdapter.notifyDataSetChanged();
-        mAdapter.swapList(mGradeObjects);
-    }
-
 }

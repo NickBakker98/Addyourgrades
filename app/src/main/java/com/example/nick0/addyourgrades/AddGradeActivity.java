@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 public class AddGradeActivity extends AppCompatActivity {
 
+    //Declaring the variables.
     public EditText addCourseName;
     public EditText addGrade;
     public String mTitle;
@@ -25,10 +26,13 @@ public class AddGradeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_grade);
 
+        //Linking variables to the xml.file
         addCourseName = findViewById(R.id.add_coursetitle);
         addGrade = findViewById(R.id.add_grade);
         saveButton = findViewById(R.id.save_button);
 
+        //Adding the OnClickListener to the saveButton which navigates back to the MainActivity and
+        //sends data.
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +54,5 @@ public class AddGradeActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 }
